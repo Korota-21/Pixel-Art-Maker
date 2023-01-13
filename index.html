@@ -17,15 +17,18 @@
         Grid Height:
         <input type="number" id="inputHeight" min="1" value="1"> Grid Width:
         <input type="number" id="inputWidth" min="1" value="1">
-        <input class="btn btn-primary" type="submit">
+        <input type="submit">
     </form>
+    <div id="colorToolsDiv">
 
-    <input type="color" id="colorPicker">
-    <table id="lastColors"></table>
-    <button id="toggleLinesBtn">Hide Pixels lines</button>
-    <h2>Design Canvas</h2>
+        <input type="color" id="colorPicker">
+        <img src="/img/colorPicker.png" alt="colorPicker" height="20px" id="colorPickerPx" >
+        <table id="lastColors"></table>
+        <h2>Design Canvas</h2>
+    </div>
     <table id="pixelCanvas"></table>
-
+    
+    <button id="toggleLinesBtn">Hide Pixels lines</button>
     <script src="designs.js"></script>
 </body>
 

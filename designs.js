@@ -1,5 +1,6 @@
 // Select color input
 const color = document.getElementById("colorPicker");
+const colorPx = document.getElementById("colorPickerPx");
 // Select size input
 const Height = document.getElementById("inputHeight");
 const Width = document.getElementById("inputWidth");
@@ -31,6 +32,21 @@ color.addEventListener('change', () => {
     lastColorsGrid.removeEventListener('click', changeColor); // عشان مايتكرر
     lastColorsGrid.addEventListener('click', changeColor);
 })
+let pickerActive = false
+colorPx.addEventListener('click', () => {
+    if (!pickerActive) {
+        colorPx.style.transform = 'rotate(-45deg)';
+        pickerActive = true
+    }
+    else {
+        deActivePicker()
+    }
+
+})
+deActivePicker = () => {
+    colorPx.style.transform = 'rotate(0deg)';
+    pickerActive = false
+}
 function changeColor(evt) {
     color.value = evt.target.id;
     console.log(color.value);
@@ -60,6 +76,13 @@ function makeGrid() {
     myGrid.addEventListener('click', respondToTheClick);
 
     function respondToTheClick(evt) {
-        evt.target.style.backgroundColor = color.value;
+        if (pickerActive) {
+            color.value = (evt.target.color) ? evt.target.color : '#FFFFFF'
+            deActivePicker()
+        }
+        else {
+            evt.target.style.backgroundColor = color.value;
+            evt.target.color = color.value;
+        }
     }
 }

@@ -1,3 +1,7 @@
+:root {
+    --border: 1px solid black;
+}
+
 body {
     text-align: center;
     font-family: Georgia, 'Times New Roman', Times, serif;
@@ -17,10 +21,10 @@ h2:first-of-type {
     margin-top: 0.5em;
 }
 
-table,
+#pixelCanvas
 tr,
-td {
-    border: 1px solid black;
+#pixelCanvas td {
+    border: var(--border);
 }
 
 table {
@@ -38,4 +42,7 @@ td {
 
 input[type="number"] {
     width: 6em;
+}
+#lastColors{
+    border: none;
 }

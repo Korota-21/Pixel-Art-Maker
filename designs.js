@@ -7,7 +7,8 @@ const lastColorsArr = []
 const lastColorsGrid = document.getElementById("lastColors");
 // When size is submitted by the user, call makeGrid()
 const myGrid = document.getElementById("pixelCanvas");
-
+const style = document.querySelector(":root").style
+const toggleLinesBtn = document.getElementById("toggleLinesBtn")
 const form = document.getElementById("sizePicker")
 form.addEventListener("submit", handleForm);
 function handleForm(event) {
@@ -30,12 +31,22 @@ color.addEventListener('change', () => {
     lastColorsGrid.removeEventListener('click', changeColor); // عشان مايتكرر
     lastColorsGrid.addEventListener('click', changeColor);
 })
-
 function changeColor(evt) {
     color.value = evt.target.id;
     console.log(color.value);
 }
-
+let showLines = true;
+toggleLinesBtn.addEventListener('click', (evt) => {
+    if (showLines) {
+        showLines = false
+        style.setProperty("--border", "#0000");
+        toggleLinesBtn.innerHTML = "Show Pixels lines"
+    } else {
+        showLines = true
+        style.setProperty("--border", " 1px solid black");
+        toggleLinesBtn.innerHTML = "Hide Pixels lines"
+    }
+})
 function makeGrid() {
     let grid = "";
     for (let row = 1; row <= Height.value; row++) {
@@ -49,6 +60,6 @@ function makeGrid() {
     myGrid.addEventListener('click', respondToTheClick);
 
     function respondToTheClick(evt) {
-        evt.target.style.backgroundColor = color.value; // استدعيت قيمةاللون بالفانكشن لما جيت برسم
+        evt.target.style.backgroundColor = color.value;
     }
 }

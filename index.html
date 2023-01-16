@@ -15,14 +15,16 @@
     <h2>Choose Grid Size</h2>
     <form id="sizePicker">
         Grid Height:
-        <input type="number" id="inputHeight" min="1" value="1"> Grid Width:
-        <input type="number" id="inputWidth" min="1" value="1">
+        <input type="number" id="inputHeight" min="1" value="5"> Grid Width:
+        <input type="number" id="inputWidth" min="1" value="5">
         <input type="submit">
     </form>
+    <input type="button" id="redo" accesskey="y" value="⏪" disabled="true">
+    <input type="button" id="undo" accesskey="z" value="⏩" disabled="true">
     <div id="colorToolsDiv">
 
         <input type="color" id="colorPicker">
-        <img src="https://github.com/Korota-21/Pixel-Art-Maker/blob/master/colorPicker.png?raw=true" alt="colorPicker" height="20px" id="colorPickerPx" >
+        <img src="colorPicker.png" alt="colorPicker" height="20px" id="colorPickerPx" >
         <table id="lastColors"></table>
         <h2>Design Canvas</h2>
     </div>
@@ -30,6 +32,7 @@
     
     <button id="toggleLinesBtn">Hide Pixels lines</button>
     <script src="designs.js"></script>
+    <script src="toggleLines.js"></script>
 </body>
 
 </html>

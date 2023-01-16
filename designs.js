@@ -2,35 +2,79 @@
 const color = document.getElementById("colorPicker");
 const colorPx = document.getElementById("colorPickerPx");
 // Select size input
-const Height = document.getElementById("inputHeight");
-const Width = document.getElementById("inputWidth");
+const UNDO = document.getElementById("undo");
+const REDO = document.getElementById("redo");
+const HEIGHT = document.getElementById("inputHeight");
+const WIDTH = document.getElementById("inputWidth");
+let Height = +HEIGHT.value
+let Width = +WIDTH.value
 const lastColorsArr = []
-const lastColorsGrid = document.getElementById("lastColors");
-// When size is submitted by the user, call makeGrid()
+const LastColorsGrid = document.getElementById("lastColors");
+LastColorsGrid.addEventListener('click', changeColor);
+let GridColorsArray = []
+let GridChangeTrackerArr = []
+let GridState = 0
 const myGrid = document.getElementById("pixelCanvas");
 const style = document.querySelector(":root").style
-const toggleLinesBtn = document.getElementById("toggleLinesBtn")
 const form = document.getElementById("sizePicker")
 form.addEventListener("submit", handleForm);
+myGrid.addEventListener('click', respondToTheClick);
+UNDO.addEventListener('click', () => {
+    GridState--
+    ButtonsState()
+    GridColorsArray = [...GridChangeTrackerArr[GridState]];
+    makeGrid()
+
+})
+REDO.addEventListener('click', () => {
+    GridState++
+    ButtonsState()
+    GridColorsArray = [...GridChangeTrackerArr[GridState]];
+    makeGrid()
+})
 function handleForm(event) {
-    makeGrid();
     event.preventDefault();
+    GridState = 0
+    Height = +HEIGHT.value
+    Width = +WIDTH.value
+    GridChangeTrackerArr = []
+    GridColorsArray = Array(Height * Width).fill('#FFFFFF')
+
+    makeGrid();
+    GridChangeTrackerArr[0] = [...GridColorsArray]
+    ButtonsState()
+
+}
+
+function makeGrid() {
+    let i = 0
+    myGrid.innerHTML = ''
+    for (let row = 1; row <= Height; row++) {
+        const ROW = document.createElement('tr');
+        for (let col = 1; col <= Width; col++) {
+            const CEL = document.createElement('td');
+            CEL.setAttribute('color', GridColorsArray[i])
+            CEL.setAttribute('i', i);
+            CEL.style.backgroundColor = GridColorsArray[i]
+
+            ROW.appendChild(CEL)
+            i++;
+        }
+        myGrid.appendChild(ROW)
+    }
 }
 
 color.addEventListener('change', () => {
-    if (lastColorsArr.length >= 6)
+    if (lastColorsArr.length >= 8)
         lastColorsArr.shift();
     lastColorsArr.push(color.value)
-    console.log(lastColorsArr)
     let grid = "";
     grid += "<tr>";
     for (let i = 0; i < lastColorsArr.length; i++) {
         grid += `<td style="background-color:${lastColorsArr[i]}" id="${lastColorsArr[i]}" ></td>`;
     }
     grid += "</tr>";
-    lastColorsGrid.innerHTML = grid;
-    lastColorsGrid.removeEventListener('click', changeColor); // عشان مايتكرر
-    lastColorsGrid.addEventListener('click', changeColor);
+    LastColorsGrid.innerHTML = grid;
 })
 let pickerActive = false
 colorPx.addEventListener('click', () => {
@@ -41,7 +85,6 @@ colorPx.addEventListener('click', () => {
     else {
         deActivePicker()
     }
-
 })
 deActivePicker = () => {
     colorPx.style.transform = 'rotate(0deg)';
@@ -49,40 +92,31 @@ deActivePicker = () => {
 }
 function changeColor(evt) {
     color.value = evt.target.id;
-    console.log(color.value);
 }
 let showLines = true;
-toggleLinesBtn.addEventListener('click', (evt) => {
-    if (showLines) {
-        showLines = false
-        style.setProperty("--border", "#0000");
-        toggleLinesBtn.innerHTML = "Show Pixels lines"
-    } else {
-        showLines = true
-        style.setProperty("--border", " 1px solid black");
-        toggleLinesBtn.innerHTML = "Hide Pixels lines"
-    }
-})
-function makeGrid() {
-    let grid = "";
-    for (let row = 1; row <= Height.value; row++) {
-        grid += "<tr>";
-        for (let col = 1; col <= Width.value; col++) {
-            grid += "<td></td>";
-        }
-        grid += "</tr>";
-    }
-    myGrid.innerHTML = grid;
-    myGrid.addEventListener('click', respondToTheClick);
 
-    function respondToTheClick(evt) {
-        if (pickerActive) {
-            color.value = (evt.target.color) ? evt.target.color : '#FFFFFF'
-            deActivePicker()
-        }
-        else {
-            evt.target.style.backgroundColor = color.value;
-            evt.target.color = color.value;
-        }
+
+function respondToTheClick(evt) {
+    if (pickerActive) {
+        color.value = evt.target.attributes.color.value
+        deActivePicker()
     }
+    else {
+        evt.target.style.backgroundColor = color.value;
+        evt.target.setAttribute('color', color.value);
+        GridColorsArray[+evt.target.attributes.i.value] = color.value
+        if (GridChangeTrackerArr.length >= 20)
+            GridChangeTrackerArr.shift();
+        else
+            GridState++
+        if (GridChangeTrackerArr.length - 1 > GridState) {
+            GridChangeTrackerArr = GridChangeTrackerArr.slice(0, GridState);
+        }
+        GridChangeTrackerArr[GridState] = [...GridColorsArray]
+        ButtonsState()
+    }
+}
+const ButtonsState = () => {
+    UNDO.disabled = (GridState > 0) ? false : true;
+    REDO.disabled = (GridChangeTrackerArr.length - 1 > GridState) ? false : true;
 }

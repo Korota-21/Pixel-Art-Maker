@@ -1,5 +1,4 @@
 "use strict";
-// Select color input
 const color = document.getElementById("colorPicker");
 color.value = "#28867f";
 const colorPx = document.getElementById("colorPickerPx");
@@ -14,22 +13,21 @@ const form = document.getElementById("sizePicker");
 const lastColorsArr = [];
 let GridColorsArray = [];
 let GridChangeTrackerArr = [];
-// let GridChangeTrackerArrTest: GridChangeTrackerArrInterface[] = []
 let pickerActive = false;
 let Height = +HEIGHT.value;
 let Width = +WIDTH.value;
 let GridState;
 const DefultColor = '#00000000'; //tramsparent black
-BODY.addEventListener('mousedown', (ev) => {
+BODY.addEventListener('mousedown', () => {
     BODY.addEventListener('mousemove', draw);
 });
-BODY.addEventListener('mouseup', (ev) => {
+BODY.addEventListener('mouseup', () => {
     BODY.removeEventListener('mousemove', draw);
 });
-BODY.addEventListener('touchstart', (ev) => {
+BODY.addEventListener('touchstart', () => {
     BODY.addEventListener('touchmove', draw);
 });
-BODY.addEventListener('touchend', (ev) => {
+BODY.addEventListener('touchend', () => {
     BODY.removeEventListener('touchmove', draw);
 });
 function changeColor(evt) {

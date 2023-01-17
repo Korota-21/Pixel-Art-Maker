@@ -25,6 +25,7 @@ h2:first-of-type {
 #pixelCanvas tr,
 #pixelCanvas td {
     border: var(--border);
+    outline:none;
 }
 
 #pixelCanvas {

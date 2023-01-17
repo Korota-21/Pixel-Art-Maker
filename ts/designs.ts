@@ -1,4 +1,3 @@
-// Select color input
 const color: HTMLInputElement = <HTMLInputElement>document.getElementById("colorPicker");
 color.value = "#28867f"
 const colorPx: HTMLImageElement = <HTMLImageElement>document.getElementById("colorPickerPx");
@@ -13,24 +12,22 @@ const form: HTMLFormElement = <HTMLFormElement>document.getElementById("sizePick
 const lastColorsArr: String[] = []
 let GridColorsArray: string[] = []
 let GridChangeTrackerArr: GridChangeTrackerInterface[] = []
-
-// let GridChangeTrackerArrTest: GridChangeTrackerArrInterface[] = []
 let pickerActive = false
 let Height = +HEIGHT.value
 let Width = +WIDTH.value
 let GridState: number
 const DefultColor = '#00000000' //tramsparent black
-BODY.addEventListener('mousedown', (ev) => {
+BODY.addEventListener('mousedown', () => {
     BODY.addEventListener('mousemove', draw)
 })
-BODY.addEventListener('mouseup', (ev) => {
+BODY.addEventListener('mouseup', () => {
     BODY.removeEventListener('mousemove', draw)
 })
 
-BODY.addEventListener('touchstart', (ev) => {
+BODY.addEventListener('touchstart', () => {
     BODY.addEventListener('touchmove', draw)
 })
-BODY.addEventListener('touchend', (ev) => {
+BODY.addEventListener('touchend', () => {
     BODY.removeEventListener('touchmove', draw)
 })
 function changeColor(evt: any) {
@@ -163,4 +160,5 @@ interface GridChangeTrackerInterface {
     curColor: string
     preColor: string
 }
+
 

@@ -1,6 +1,7 @@
 "use strict";
 const toggleLinesBtn = document.getElementById("toggleLinesBtn");
 let showLines = true;
+// @ts-ignore
 const style = document.querySelector(":root").style;
 toggleLinesBtn.addEventListener('click', (evt) => {
     if (showLines) {

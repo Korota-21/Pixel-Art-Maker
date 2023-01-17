@@ -1,5 +1,6 @@
 const toggleLinesBtn: HTMLButtonElement = <HTMLButtonElement>document.getElementById("toggleLinesBtn")
 let showLines = true;
+// @ts-ignore
 const style: any = document.querySelector(":root")!.style
 
 toggleLinesBtn.addEventListener('click', (evt) => {

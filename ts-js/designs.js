@@ -1,6 +1,7 @@
 "use strict";
 // Select color input
 const color = document.getElementById("colorPicker");
+color.value = "#28867f";
 const colorPx = document.getElementById("colorPickerPx");
 const myGrid = document.getElementById("pixelCanvas");
 const BODY = document.querySelector('body');
@@ -8,51 +9,46 @@ const UNDO = document.getElementById("undo");
 const REDO = document.getElementById("redo");
 const HEIGHT = document.getElementById("inputHeight");
 const WIDTH = document.getElementById("inputWidth");
+const LastColorsGridTable = document.getElementById("lastColors");
+const form = document.getElementById("sizePicker");
+const lastColorsArr = [];
+let GridColorsArray = [];
+let GridChangeTrackerArr = [];
+// let GridChangeTrackerArrTest: GridChangeTrackerArrInterface[] = []
+let pickerActive = false;
+let Height = +HEIGHT.value;
+let Width = +WIDTH.value;
+let GridState;
+const DefultColor = '#00000000'; //tramsparent black
 BODY.addEventListener('mousedown', (ev) => {
-    BODY.addEventListener('mousemove', respondToTheClick);
+    BODY.addEventListener('mousemove', draw);
 });
 BODY.addEventListener('mouseup', (ev) => {
-    BODY.removeEventListener('mousemove', respondToTheClick);
+    BODY.removeEventListener('mousemove', draw);
+});
+BODY.addEventListener('touchstart', (ev) => {
+    BODY.addEventListener('touchmove', draw);
+});
+BODY.addEventListener('touchend', (ev) => {
+    BODY.removeEventListener('touchmove', draw);
 });
 function changeColor(evt) {
     color.value = evt.target.id;
 }
-let pickerActive = false;
-myGrid.addEventListener('click', respondToTheClick);
-let Height = +HEIGHT.value;
-let Width = +WIDTH.value;
-const lastColorsArr = [];
-const LastColorsGridTable = document.getElementById("lastColors");
+myGrid.addEventListener('click', draw);
 LastColorsGridTable.addEventListener('click', changeColor);
-let GridColorsArray = [];
-let GridChangeTrackerArr = [];
-let GridState = 0;
-const form = document.getElementById("sizePicker");
 form.addEventListener("submit", handleForm);
-UNDO.addEventListener('click', () => {
-    GridState--;
-    ButtonsState();
-    GridColorsArray = [...GridChangeTrackerArr[GridState]];
-    makeGrid();
-});
-REDO.addEventListener('click', () => {
-    GridState++;
-    ButtonsState();
-    GridColorsArray = [...GridChangeTrackerArr[GridState]];
-    makeGrid();
-});
 function handleForm(event) {
     event.preventDefault();
     GridState = 0;
     Height = +HEIGHT.value;
     Width = +WIDTH.value;
     GridChangeTrackerArr = [];
-    GridColorsArray = Array(Height * Width).fill('#FFFFFF');
-    makeGrid();
-    GridChangeTrackerArr[0] = [...GridColorsArray];
+    GridColorsArray = Array(Height * Width).fill(DefultColor);
+    updateGrid();
     ButtonsState();
 }
-function makeGrid() {
+function updateGrid() {
     let i = 0;
     myGrid.innerHTML = '';
     for (let row = 1; row <= Height; row++) {
@@ -95,35 +91,54 @@ colorPx.addEventListener('click', () => {
 });
 const ButtonsState = () => {
     UNDO.disabled = (GridState > 0) ? false : true;
-    REDO.disabled = (GridChangeTrackerArr.length - 1 > GridState) ? false : true;
+    REDO.disabled = (GridChangeTrackerArr.length > GridState) ? false : true;
 };
-function respondToTheClick(evt) {
+function draw(evt) {
+    evt.preventDefault();
     const TARGET = evt.target;
     if (TARGET.tagName !== 'TD')
         return;
-    console.log(TARGET.getAttributeNames());
-    console.log(TARGET.attributes);
-    console.log(TARGET);
-    if (pickerActive) {
-        color.value = TARGET.attributes.color.value;
-        deActivePicker();
-    }
-    else {
-        console.log(GridColorsArray);
-        TARGET.style.backgroundColor = color.value;
-        TARGET.setAttribute('color', color.value);
-        if (GridColorsArray[+TARGET.attributes.i.value] == color.value)
-            return;
-        GridColorsArray[+TARGET.attributes.i.value] = color.value;
-        if (GridChangeTrackerArr.length >= 20)
-            GridChangeTrackerArr.shift();
-        else
-            GridState++;
-        if (GridChangeTrackerArr.length - 1 > GridState) {
-            GridChangeTrackerArr = GridChangeTrackerArr.slice(0, GridState);
-        }
-        if (GridState > 0 && !(GridChangeTrackerArr[GridState - 1] === GridColorsArray))
-            GridChangeTrackerArr[GridState] = [...GridColorsArray];
-        ButtonsState();
-    }
+    if (pickerActive)
+        // @ts-ignore
+        return pickColor(TARGET.attributes.color.value);
+    // @ts-ignore
+    const CEL_ID = +TARGET.attributes.i.value;
+    if (GridColorsArray[CEL_ID] == color.value)
+        return;
+    AddRecord(CEL_ID, GridColorsArray[CEL_ID], color.value);
+    // @ts-ignore
+    TARGET.style.backgroundColor = color.value;
+    TARGET.setAttribute('color', color.value);
+    GridColorsArray[CEL_ID] = color.value;
+    if (GridChangeTrackerArr.length - 1 > GridState)
+        GridChangeTrackerArr.splice(GridState + 1, GridChangeTrackerArr.length - GridState + 1);
+    if (GridChangeTrackerArr.length >= 20)
+        return GridChangeTrackerArr.shift();
+    GridState++;
+    ButtonsState();
+}
+const AddRecord = (index, preColor, curColor) => {
+    GridChangeTrackerArr.push({
+        preColor: preColor,
+        curColor: curColor,
+        index: index
+    });
+};
+UNDO.addEventListener('click', () => {
+    let changedCell = GridChangeTrackerArr[GridState - 1];
+    GridColorsArray[changedCell.index] = changedCell.preColor;
+    GridState--;
+    ButtonsState();
+    updateGrid();
+});
+REDO.addEventListener('click', () => {
+    let changedCell = GridChangeTrackerArr[GridState];
+    GridColorsArray[changedCell.index] = changedCell.curColor;
+    GridState++;
+    ButtonsState();
+    updateGrid();
+});
+function pickColor(pcolor) {
+    color.value = pcolor;
+    return deActivePicker();
 }

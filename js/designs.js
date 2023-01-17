@@ -1,7 +1,17 @@
 // Select color input
 const color = document.getElementById("colorPicker");
 const colorPx = document.getElementById("colorPickerPx");
-// Select size input
+const myGrid = document.getElementById("pixelCanvas");
+const BODY = document.getElementsByTagName('body')[0]
+BODY.addEventListener('mousedown', (ev) => {
+    BODY.addEventListener('mousemove', respondToTheClick)
+})
+BODY.addEventListener('mouseup', (ev) => {
+    BODY.removeEventListener('mousemove', respondToTheClick)
+})
+
+
+myGrid.addEventListener('click', respondToTheClick);
 const UNDO = document.getElementById("undo");
 const REDO = document.getElementById("redo");
 const HEIGHT = document.getElementById("inputHeight");
@@ -14,11 +24,9 @@ LastColorsGrid.addEventListener('click', changeColor);
 let GridColorsArray = []
 let GridChangeTrackerArr = []
 let GridState = 0
-const myGrid = document.getElementById("pixelCanvas");
 const style = document.querySelector(":root").style
 const form = document.getElementById("sizePicker")
 form.addEventListener("submit", handleForm);
-myGrid.addEventListener('click', respondToTheClick);
 UNDO.addEventListener('click', () => {
     GridState--
     ButtonsState()
@@ -68,6 +76,7 @@ color.addEventListener('change', () => {
     if (lastColorsArr.length >= 8)
         lastColorsArr.shift();
     lastColorsArr.push(color.value)
+    console.log(lastColorsArr);
     let grid = "";
     grid += "<tr>";
     for (let i = 0; i < lastColorsArr.length; i++) {
@@ -95,8 +104,11 @@ function changeColor(evt) {
 }
 let showLines = true;
 
-
+let LastCell = null
 function respondToTheClick(evt) {
+    console.log(evt);
+    if (evt.target.tagName !== 'TD')
+        return
     if (pickerActive) {
         color.value = evt.target.attributes.color.value
         deActivePicker()
@@ -104,6 +116,10 @@ function respondToTheClick(evt) {
     else {
         evt.target.style.backgroundColor = color.value;
         evt.target.setAttribute('color', color.value);
+        console.log(evt.target);
+        console.log(LastCell);
+        console.log(GridColorsArray[+evt.target.attributes.i.value] == color.value);
+        if (GridColorsArray[+evt.target.attributes.i.value] == color.value) return;
         GridColorsArray[+evt.target.attributes.i.value] = color.value
         if (GridChangeTrackerArr.length >= 20)
             GridChangeTrackerArr.shift();
@@ -112,11 +128,20 @@ function respondToTheClick(evt) {
         if (GridChangeTrackerArr.length - 1 > GridState) {
             GridChangeTrackerArr = GridChangeTrackerArr.slice(0, GridState);
         }
-        GridChangeTrackerArr[GridState] = [...GridColorsArray]
+        // console.log(GridChangeTrackerArr[GridState - 1] === GridColorsArray);
+        if (GridState > 0 && !(GridChangeTrackerArr[GridState - 1] === GridColorsArray))
+            GridChangeTrackerArr[GridState] = [...GridColorsArray]
         ButtonsState()
+        // console.log(GridChangeTrackerArr);
+        // console.log(evt);
+        registerLastCell(evt.target)
+
     }
 }
 const ButtonsState = () => {
     UNDO.disabled = (GridState > 0) ? false : true;
     REDO.disabled = (GridChangeTrackerArr.length - 1 > GridState) ? false : true;
+}
+const registerLastCell = (currentCell) => {
+    LastCell = currentCell
 }

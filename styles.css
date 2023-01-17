@@ -7,6 +7,7 @@ body {
     font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
+
 h1 {
     font-family: "Tahoma";
     font-size: 60px;
@@ -21,14 +22,15 @@ h2:first-of-type {
     margin-top: 0.5em;
 }
 
-#pixelCanvas
-tr,
+#pixelCanvas tr,
 #pixelCanvas td {
     border: var(--border);
 }
-#pixelCanvas{
+
+#pixelCanvas {
     margin-bottom: 8px;
 }
+
 table {
     border-collapse: collapse;
     margin: 0 auto;
@@ -45,12 +47,15 @@ td {
 input[type="number"] {
     width: 6em;
 }
-#lastColors{
+
+#lastColors {
     border: none;
 }
-#colorPickerPx{
+
+#colorPickerPx {
     margin-bottom: 12px;
 }
-#colorToolsDiv{
+
+#colorToolsDiv {
     margin-top: 8px;
 }

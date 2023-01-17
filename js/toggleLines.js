@@ -1,4 +1,6 @@
 const toggleLinesBtn = document.getElementById("toggleLinesBtn")
+const style = document.querySelector(":root").style
+
 toggleLinesBtn.addEventListener('click', (evt) => {
     if (showLines) {
         showLines = false

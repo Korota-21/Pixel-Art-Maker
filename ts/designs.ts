@@ -1,5 +1,5 @@
 const color: HTMLInputElement = <HTMLInputElement>document.getElementById("colorPicker");
-color.value = "#28867f"
+// color.value = "#28867f"
 const colorPx: HTMLImageElement = <HTMLImageElement>document.getElementById("colorPickerPx");
 const myGrid: HTMLElement = document.getElementById("pixelCanvas")!;
 const BODY: HTMLElement = document.querySelector('body')!;
@@ -135,21 +135,26 @@ const AddRecord = (index: number, preColor: string, curColor: string): void => {
         index: index
     })
 }
-UNDO.addEventListener('click', () => {
-    let changedCell = GridChangeTrackerArr[GridState - 1];
-    GridColorsArray[changedCell.index] = changedCell.preColor
-    GridState--
-    ButtonsState()
-    updateGrid()
-
-})
-REDO.addEventListener('click', () => {
+const RedoFun = () => {
     let changedCell = GridChangeTrackerArr[GridState];
     GridColorsArray[changedCell.index] = changedCell.curColor
     GridState++
+    update();
+}
+const UndoFun = () => {
+    let changedCell = GridChangeTrackerArr[GridState - 1];
+    GridColorsArray[changedCell.index] = changedCell.preColor
+    GridState--
+    update();
+}
+UNDO.addEventListener('click', UndoFun)
+UNDO.addEventListener('accesskey', UndoFun)
+REDO.addEventListener('click', RedoFun)
+REDO.addEventListener('accesskey', RedoFun)
+const update = () => {
     ButtonsState()
     updateGrid()
-})
+}
 function pickColor(pcolor: string) {
     color.value = pcolor;
     return deActivePicker();
@@ -160,5 +165,3 @@ interface GridChangeTrackerInterface {
     curColor: string
     preColor: string
 }
-
-

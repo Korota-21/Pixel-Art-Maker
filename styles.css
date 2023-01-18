@@ -25,7 +25,6 @@ h2:first-of-type {
 #pixelCanvas tr,
 #pixelCanvas td {
     border: var(--border);
-    outline:none;
 }
 
 #pixelCanvas {
@@ -59,4 +58,8 @@ input[type="number"] {
 
 #colorToolsDiv {
     margin-top: 8px;
+}
+
+#result{
+margin-top: 8px;
 }

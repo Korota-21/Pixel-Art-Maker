@@ -1,6 +1,6 @@
 "use strict";
+let resultDiv = document.getElementById("result");
 function convertToImage() {
-    let resultDiv = document.getElementById("result");
     if (myGrid.innerHTML == '') {
         resultDiv.innerHTML = 'there are no drawing';
         return;
@@ -13,7 +13,7 @@ function convertToImage() {
             const imgElm = document.createElement('img');
             imgElm.src = img;
             resultDiv.appendChild(imgElm);
-            resultDiv.innerHTML += '<br><a download="myImage.jpeg" href="' + img + '" class="button"><button>Click me !</button></a>';
+            resultDiv.innerHTML += `<br><a download="myImage.jpeg" href="${img}" class="button"><button>${worder.downloadBtn}</button></a>`;
         }
     });
 }

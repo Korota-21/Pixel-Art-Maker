@@ -42,6 +42,7 @@ function handleForm(event) {
     Height = +HEIGHT.value;
     Width = +WIDTH.value;
     GridChangeTrackerArr = [];
+    resultDiv.innerHTML = '';
     GridColorsArray = Array(Height * Width).fill(DefultColor);
     updateGrid();
     ButtonsState();

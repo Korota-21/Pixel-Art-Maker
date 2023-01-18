@@ -11,40 +11,43 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 
-<body>
+<body dir="ltr" lang="en">
     <h1>Pixel Art Maker</h1>
 
-    <h2>Choose Grid Size</h2>
+    <h2>
+        <label id="secondaryTitleLabel" class="lang">Grid Size</label>
+    </h2>
     <form id="sizePicker">
-        <label for="inputHeight">
+        <label for="inputHeight" id="inputHeightLabel" class="lang" class="lang">
             Grid Height:
         </label>
         <input type="number" id="inputHeight" min="1" value="5">
-        <label for="inputWidth">
+        <label for="inputWidth" id="inputWidthLabel" class="lang" class="lang">
             Grid Width:
         </label>
         <input type="number" id="inputWidth" min="1" value="5">
-        <input type="submit">
+        <input type="submit" id="submitBtn" class="lang" class="lang">
     </form>
     <input type="button" id="redo" accesskey="Y" value="⏪" disabled="true">
     <input type="button" id="undo" accesskey="X" value="⏩" disabled="true">
     <div id="colorToolsDiv">
-
         <input type="color" id="colorPicker">
         <img src="colorPicker.png" alt="colorPicker" height="20px" id="colorPickerPx">
         <table id="lastColors"></table>
-        <h2>Design Canvas</h2>
+        <h2 class="lang" id="CanvasTitle" >Design Canvas</h2>
     </div>
     <table id="pixelCanvas"></table>
 
-    <button id="toggleLinesBtn">Hide Pixels lines</button>
-    <button onclick="convertToImage()">Generate Picture</button>
+    <button id="toggleLinesBtn" class="lang">Hide Pixels lines</button>
+    <button onclick="convertToImage()" class="lang" id="GenerateBtn">Generate Picture</button>
 
     <div id="result">
+      
     </div>
-    <!-- <script src="js/designs.js"></script>
-            <script src="js/toggleLines.js"></script> -->
+
 </body>
+
+
 <script src="ts-js/designs.js"></script>
 <script src="ts-js/toggleLines.js"></script>
 <script src="ts-js/language.js"></script>

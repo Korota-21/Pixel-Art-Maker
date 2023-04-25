@@ -10,27 +10,47 @@ const HEIGHT = document.getElementById("inputHeight");
 const WIDTH = document.getElementById("inputWidth");
 const LastColorsGridTable = document.getElementById("lastColors");
 const form = document.getElementById("sizePicker");
-const lastColorsArr = [];
+
+
+
+let lastColorsArr = [];
 let GridColorsArray = []
 let gridData = localStorage.getItem("Grid");
 let GridChangeTrackerArr = [];
 let pickerActive = false;
 let Height = +HEIGHT.value;
 let Width = +WIDTH.value;
+
 let GridState;
 if (gridData) {
     remember()
 }
+function storeGrid() {
+    const gridData = {
+        Grid: GridColorsArray,
+        Height: Height,
+        Width: Width,
+        GridChangeTrackerArr,
+        GridState,
+        lastColorsArr,
+        color: color.value
+    }
+    localStorage.setItem("Grid", JSON.stringify(gridData));
 
+}
 function remember() {
-    gridData=  JSON.parse(gridData)
+    gridData = JSON.parse(gridData)
     console.log(gridData);
     GridColorsArray = gridData.Grid
     GridState = 0;
+    color.value = gridData.color
+    GridState = gridData.GridState
     Height = gridData.Height
     Width = gridData.Width
-    GridChangeTrackerArr = [];
+    GridChangeTrackerArr = gridData.GridChangeTrackerArr;
+    lastColorsArr = gridData.lastColorsArr
     updateGrid();
+    LastColorsGridTableUpdate()
     ButtonsState();
 
 }
@@ -66,15 +86,7 @@ function handleForm(event) {
     updateGrid();
     ButtonsState();
 }
-function storeGrid() {
-    const gridData = {
-        Grid: GridColorsArray,
-        Height: Height,
-        Width: Width
-    }
-    localStorage.setItem("Grid", JSON.stringify(gridData));
 
-}
 function updateGrid() {
     let i = 0;
     myGrid.innerHTML = '';
@@ -100,13 +112,8 @@ color.addEventListener('change', () => {
     if (lastColorsArr.length >= 8)
         lastColorsArr.shift();
     lastColorsArr.push(color.value);
-    let grid = "";
-    grid += "<tr>";
-    for (let i = 0; i < lastColorsArr.length; i++) {
-        grid += `<td style="background-color:${lastColorsArr[i]}" id="${lastColorsArr[i]}" ></td>`;
-    }
-    grid += "</tr>";
-    LastColorsGridTable.innerHTML = grid;
+    LastColorsGridTableUpdate();
+    storeGrid()
 });
 colorPx.addEventListener('click', () => {
     if (!pickerActive) {
@@ -117,6 +124,16 @@ colorPx.addEventListener('click', () => {
         deActivePicker();
     }
 });
+function LastColorsGridTableUpdate() {
+    let grid = "";
+    grid += "<tr>";
+    for (let i = 0; i < lastColorsArr.length; i++) {
+        grid += `<td style="background-color:${lastColorsArr[i]}" id="${lastColorsArr[i]}" ></td>`;
+    }
+    grid += "</tr>";
+    LastColorsGridTable.innerHTML = grid;
+}
+
 function ButtonsState() {
     UNDO.disabled = (GridState > 0) ? false : true;
     REDO.disabled = (GridChangeTrackerArr.length > GridState) ? false : true;

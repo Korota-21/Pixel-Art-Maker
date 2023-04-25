@@ -11,12 +11,30 @@ const WIDTH = document.getElementById("inputWidth");
 const LastColorsGridTable = document.getElementById("lastColors");
 const form = document.getElementById("sizePicker");
 const lastColorsArr = [];
-let GridColorsArray = [];
+let GridColorsArray = []
+let gridData = localStorage.getItem("Grid");
 let GridChangeTrackerArr = [];
 let pickerActive = false;
 let Height = +HEIGHT.value;
 let Width = +WIDTH.value;
 let GridState;
+if (gridData) {
+    remember()
+}
+
+function remember() {
+    gridData=  JSON.parse(gridData)
+    console.log(gridData);
+    GridColorsArray = gridData.Grid
+    GridState = 0;
+    Height = gridData.Height
+    Width = gridData.Width
+    GridChangeTrackerArr = [];
+    updateGrid();
+    ButtonsState();
+
+}
+
 const DefultColor = '#00000000'; //tramsparent black
 BODY.addEventListener('mousedown', () => {
     BODY.addEventListener('mousemove', draw);
@@ -43,9 +61,19 @@ function handleForm(event) {
     Width = +WIDTH.value;
     GridChangeTrackerArr = [];
     resultDiv.innerHTML = '';
+    GridColorsArray = []
     GridColorsArray = Array(Height * Width).fill(DefultColor);
     updateGrid();
     ButtonsState();
+}
+function storeGrid() {
+    const gridData = {
+        Grid: GridColorsArray,
+        Height: Height,
+        Width: Width
+    }
+    localStorage.setItem("Grid", JSON.stringify(gridData));
+
 }
 function updateGrid() {
     let i = 0;
@@ -62,6 +90,7 @@ function updateGrid() {
         }
         myGrid.appendChild(ROW);
     }
+
 }
 const deActivePicker = () => {
     colorPx.style.transform = 'rotate(0deg)';
@@ -88,7 +117,7 @@ colorPx.addEventListener('click', () => {
         deActivePicker();
     }
 });
-const ButtonsState = () => {
+function ButtonsState() {
     UNDO.disabled = (GridState > 0) ? false : true;
     REDO.disabled = (GridChangeTrackerArr.length > GridState) ? false : true;
 };
@@ -115,6 +144,8 @@ function draw(evt) {
         return GridChangeTrackerArr.shift();
     GridState++;
     ButtonsState();
+    storeGrid()
+
 }
 const AddRecord = (index, preColor, curColor) => {
     GridChangeTrackerArr.push({
@@ -142,6 +173,8 @@ REDO.addEventListener('accesskey', RedoFun);
 const update = () => {
     ButtonsState();
     updateGrid();
+    storeGrid()
+
 };
 function pickColor(pcolor) {
     color.value = pcolor;

@@ -13,7 +13,7 @@ function convertToImage() {
             const imgElm = document.createElement('img');
             imgElm.src = img;
             resultDiv.appendChild(imgElm);
-            resultDiv.innerHTML += `<br><a download="myImage.jpeg" href="${img}" class="button"><button>${worder.downloadBtn}</button></a>`;
+            resultDiv.innerHTML += `<br><a download="myImage.png" href="${img}" class="button"><button>${worder.downloadBtn}</button></a>`;
         }
     });
 }

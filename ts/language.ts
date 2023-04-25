@@ -1,8 +1,5 @@
 var userLang = navigator.language;
-console.log("The language is: " + userLang);
-
 let labels: Ilabels = <Ilabels>document.getElementsByClassName("lang");
-console.log(labels);
 
 const langWords = {
     en: {
@@ -39,7 +36,7 @@ if (userLang.includes('en')) {
 }
 labels.secondaryTitleLabel.innerText = worder.secondaryTitle
 labels.inputHeightLabel.innerText = worder.inputHeightLabel
-labels.inputWidthLabel.innerText = worder.secondaryTitle
+labels.inputWidthLabel.innerText = worder.inputWidthLabel
 labels.submitBtn.value = worder.submitBtn
 labels.toggleLinesBtn.innerText = worder.toggleLinesBtn
 labels.CanvasTitle.innerText = worder.CanvasTitle

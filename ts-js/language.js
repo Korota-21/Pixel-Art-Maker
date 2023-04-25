@@ -1,8 +1,6 @@
 "use strict";
 var userLang = navigator.language;
-console.log("The language is: " + userLang);
 let labels = document.getElementsByClassName("lang");
-console.log(labels);
 const langWords = {
     en: {
         secondaryTitle: 'Grid Size:',
@@ -38,7 +36,7 @@ else if (userLang.includes('ar')) {
 }
 labels.secondaryTitleLabel.innerText = worder.secondaryTitle;
 labels.inputHeightLabel.innerText = worder.inputHeightLabel;
-labels.inputWidthLabel.innerText = worder.secondaryTitle;
+labels.inputWidthLabel.innerText = worder.inputWidthLabel;
 labels.submitBtn.value = worder.submitBtn;
 labels.toggleLinesBtn.innerText = worder.toggleLinesBtn;
 labels.CanvasTitle.innerText = worder.CanvasTitle;

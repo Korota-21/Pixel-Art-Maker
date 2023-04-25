@@ -5,9 +5,8 @@ let showLines = true;
 const style = document.querySelector(":root").style;
 toggleLinesBtn.addEventListener('click', (evt) => {
     if (showLines) {
-        console.log(55);
         showLines = false;
-        style.setProperty("--border", "#000000");
+        style.setProperty("--border", "#00000000");
         toggleLinesBtn.innerHTML = "Show Pixels lines";
     }
     else {

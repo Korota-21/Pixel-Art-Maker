@@ -4,7 +4,7 @@
 
 body {
     text-align: center;
-    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-family: 'Chakra Petch', sans-serif;                                                
 }
 
 
@@ -25,6 +25,9 @@ h2:first-of-type {
 #pixelCanvas tr,
 #pixelCanvas td {
     border: var(--border);
+    border-spacing: 0;
+    outline: 0;
+    
 }
 
 #pixelCanvas {
@@ -32,6 +35,7 @@ h2:first-of-type {
 }
 
 table {
+    border-spacing: 0;
     border-collapse: collapse;
     margin: 0 auto;
 }
@@ -57,9 +61,12 @@ input[type="number"] {
 }
 
 #colorToolsDiv {
-    margin-top: 8px;
+    margin-top: 4px;
 }
 
 #result{
 margin-top: 8px;
+}
+#sizePicker{
+    margin-bottom: 4px;
 }

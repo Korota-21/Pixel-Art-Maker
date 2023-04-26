@@ -210,6 +210,7 @@ REDO.addEventListener('accesskey', RedoFun)
 const update = () => {
     ButtonsState()
     updateGrid()
+    storeGrid()
 }
 function pickColor(pcolor: string) {
     color.value = pcolor;

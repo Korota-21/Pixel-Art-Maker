@@ -9,7 +9,9 @@ const HEIGHT: HTMLInputElement = <HTMLInputElement>document.getElementById("inpu
 const WIDTH: HTMLInputElement = <HTMLInputElement>document.getElementById("inputWidth")!;
 const LastColorsGridTable: HTMLTableElement = <HTMLTableElement>document.getElementById("lastColors")!;
 const form: HTMLFormElement = <HTMLFormElement>document.getElementById("sizePicker")
-const lastColorsArr: String[] = []
+
+
+let lastColorsArr: string[] = []
 let GridColorsArray: string[] = []
 let GridChangeTrackerArr: GridChangeTrackerInterface[] = []
 let pickerActive = false
@@ -17,6 +19,62 @@ let Height = +HEIGHT.value
 let Width = +WIDTH.value
 let GridState: number
 const DefultColor = '#00000000' //tramsparent black
+let getGridData = localStorage.getItem("Grid");
+if (getGridData) {
+    remember()
+}
+interface gridDataI {
+    Grid: string[]
+    Height: number,
+    Width: number,
+    GridChangeTrackerArr: GridChangeTrackerInterface[],
+    GridState: number,
+    lastColorsArr: string[],
+    color: string
+}
+function storeGrid() {
+    const gridData: gridDataI = {
+        Grid: GridColorsArray,
+        Height: Height,
+        Width: Width,
+        GridChangeTrackerArr,
+        GridState,
+        lastColorsArr,
+        color: color.value
+    }
+    try {
+        localStorage.setItem("Grid", JSON.stringify(gridData));
+        console.log('save');
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+function remember() {
+    const gridData: gridDataI = JSON.parse(getGridData!)
+    console.log(gridData);
+    GridColorsArray = gridData.Grid
+    GridState = 0;
+    color.value = gridData.color
+    GridState = gridData.GridState
+    Height = gridData.Height
+    Width = gridData.Width
+    GridChangeTrackerArr = gridData.GridChangeTrackerArr;
+    lastColorsArr = gridData.lastColorsArr
+    updateGrid();
+    LastColorsGridTableUpdate()
+    ButtonsState();
+
+}
+function LastColorsGridTableUpdate() {
+    let grid = "";
+    grid += "<tr>";
+    for (let i = 0; i < lastColorsArr.length; i++) {
+        grid += `<td style="background-color:${lastColorsArr[i]}" id="${lastColorsArr[i]}" ></td>`;
+    }
+    grid += "</tr>";
+    LastColorsGridTable.innerHTML = grid;
+}
 BODY.addEventListener('mousedown', () => {
     BODY.addEventListener('mousemove', draw)
 })
@@ -44,7 +102,7 @@ function handleForm(event: SubmitEvent) {
     Height = +HEIGHT.value
     Width = +WIDTH.value
     GridChangeTrackerArr = []
-    resultDiv.innerHTML =''
+    resultDiv.innerHTML = ''
     GridColorsArray = Array(Height * Width).fill(DefultColor)
 
     updateGrid();
@@ -77,13 +135,9 @@ color.addEventListener('change', () => {
     if (lastColorsArr.length >= 8)
         lastColorsArr.shift();
     lastColorsArr.push(color.value)
-    let grid = "";
-    grid += "<tr>";
-    for (let i = 0; i < lastColorsArr.length; i++) {
-        grid += `<td style="background-color:${lastColorsArr[i]}" id="${lastColorsArr[i]}" ></td>`;
-    }
-    grid += "</tr>";
-    LastColorsGridTable.innerHTML = grid;
+    LastColorsGridTableUpdate();
+    storeGrid()
+
 })
 colorPx.addEventListener('click', () => {
     if (!pickerActive) {
@@ -95,12 +149,13 @@ colorPx.addEventListener('click', () => {
     }
 })
 
-const ButtonsState = () => {
+function ButtonsState() {
     UNDO.disabled = (GridState > 0) ? false : true;
     REDO.disabled = (GridChangeTrackerArr.length > GridState) ? false : true;
 }
 
 function draw(evt: MouseEvent | TouchEvent) {
+
     evt.preventDefault();
     const TARGET: HTMLTableCellElement = <HTMLTableCellElement>evt.target
     if (TARGET.tagName !== 'TD')
@@ -119,6 +174,7 @@ function draw(evt: MouseEvent | TouchEvent) {
     TARGET.setAttribute('color', color.value);
     GridColorsArray[CEL_ID] = color.value
 
+    storeGrid()
     if (GridChangeTrackerArr.length - 1 > GridState)
         GridChangeTrackerArr.splice(GridState + 1, GridChangeTrackerArr.length - GridState + 1)
 

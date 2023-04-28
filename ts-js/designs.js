@@ -10,6 +10,9 @@ const HEIGHT = document.getElementById("inputHeight");
 const WIDTH = document.getElementById("inputWidth");
 const LastColorsGridTable = document.getElementById("lastColors");
 const form = document.getElementById("sizePicker");
+const refrenceImg = document.getElementById("refrenceImg");
+const refrenceDiv = document.getElementById("refrenceDiv");
+const file = document.getElementById("file");
 let lastColorsArr = [];
 let GridColorsArray = [];
 let GridChangeTrackerArr = [];
@@ -42,7 +45,6 @@ function storeGrid() {
 }
 function remember() {
     const gridData = JSON.parse(getGridData);
-    console.log(gridData);
     GridColorsArray = gridData.Grid;
     GridState = 0;
     color.value = gridData.color;
@@ -76,6 +78,16 @@ BODY.addEventListener('touchstart', () => {
 BODY.addEventListener('touchend', () => {
     BODY.removeEventListener('touchmove', draw);
 });
+file.addEventListener("change", handleFile, false);
+function handleFile(evt) {
+    if (evt.files && evt.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $('#refrenceImg').attr('src', e.target.result).height(110);
+        };
+        reader.readAsDataURL(evt.files[0]);
+    }
+}
 function changeColor(evt) {
     color.value = evt.target.id;
 }

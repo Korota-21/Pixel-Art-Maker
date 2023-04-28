@@ -4,10 +4,37 @@
 
 body {
     text-align: center;
-    font-family: 'Chakra Petch', sans-serif;                                                
+    font-family: 'Chakra Petch', sans-serif;
 }
 
+.tools {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    /* justify-content: space-evenly; */
 
+}
+.tools div{
+    width: 200px;
+}
+.refrenceDiv {
+    /* flex-wrap: nowrap | w; */
+    /* background-color: antiquewhite; */
+}
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.tools-art{
+    
+    /* flex-direction: column;
+    justify-content: center; */
+}
 h1 {
     font-family: "Tahoma";
     font-size: 60px;
@@ -15,7 +42,7 @@ h1 {
 }
 
 h2 {
-    margin: 1em 0 0.25em;
+    /* margin: 1em 0 0.25em; */
 }
 
 h2:first-of-type {
@@ -27,7 +54,7 @@ h2:first-of-type {
     border: var(--border);
     border-spacing: 0;
     outline: 0;
-    
+
 }
 
 #pixelCanvas {
@@ -64,9 +91,10 @@ input[type="number"] {
     margin-top: 4px;
 }
 
-#result{
-margin-top: 8px;
+#result {
+    margin-top: 8px;
 }
-#sizePicker{
+
+#sizePicker {
     margin-bottom: 4px;
 }

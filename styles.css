@@ -14,27 +14,36 @@ body {
     /* justify-content: space-evenly; */
 
 }
-.tools div{
+
+.tools div {
     width: 200px;
 }
-.refrenceDiv {
-    /* flex-wrap: nowrap | w; */
-    /* background-color: antiquewhite; */
-}
-.inputfile {
-	width: 0.1px;
-	height: 0.1px;
-	opacity: 0;
-	overflow: hidden;
-	position: absolute;
-	z-index: -1;
+
+.referenceDiv {
+    /* background-color: aliceblue; */
+    /* flex-direction: column; */
 }
 
-.tools-art{
-    
+#referenceImg {
+    position: relative;
+    right: 0;
+}
+
+.inputfile {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.tools-art {
+
     /* flex-direction: column;
     justify-content: center; */
 }
+
 h1 {
     font-family: "Tahoma";
     font-size: 60px;
@@ -88,7 +97,7 @@ input[type="number"] {
 }
 
 #colorToolsDiv {
-    margin-top: 4px;
+    margin-top: 10px;
 }
 
 #result {

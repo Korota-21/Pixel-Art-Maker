@@ -9,10 +9,6 @@ const HEIGHT: HTMLInputElement = <HTMLInputElement>document.getElementById("inpu
 const WIDTH: HTMLInputElement = <HTMLInputElement>document.getElementById("inputWidth")!;
 const LastColorsGridTable: HTMLTableElement = <HTMLTableElement>document.getElementById("lastColors")!;
 const form: HTMLFormElement = <HTMLFormElement>document.getElementById("sizePicker")
-const refrenceImg: HTMLImageElement = <HTMLImageElement>document.getElementById("refrenceImg")
-const refrenceDiv: HTMLDivElement = <HTMLDivElement>document.getElementById("refrenceDiv")
-const file: HTMLInputElement = <HTMLInputElement>document.getElementById("file")
-
 
 let lastColorsArr: string[] = []
 let GridColorsArray: string[] = []
@@ -90,16 +86,7 @@ BODY.addEventListener('touchstart', () => {
 BODY.addEventListener('touchend', () => {
     BODY.removeEventListener('touchmove', draw)
 })
-file.addEventListener("change", handleFile, false);
-function handleFile(evt: any) {    
-    if (evt.files && evt.files[0]) {
-        var reader = new FileReader();
-        reader.onload = function (e: any) {            
-            $('#refrenceImg').attr('src', e.target.result).height(110)
-        };
-        reader.readAsDataURL(evt.files[0]);
-    }
-}
+
 function changeColor(evt: any) {
     color.value = evt.target.id;
 }
@@ -117,10 +104,8 @@ function handleForm(event: SubmitEvent) {
     GridChangeTrackerArr = []
     resultDiv.innerHTML = ''
     GridColorsArray = Array(Height * Width).fill(DefultColor)
-
     updateGrid();
     ButtonsState()
-
 }
 
 function updateGrid() {
